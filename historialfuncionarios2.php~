@@ -1,0 +1,37 @@
+<?
+session_start();
+$enlace = mysql_connect("localhost", "root", "")
+   or die("No pudo conectarse : " . mysql_error());
+
+mysql_select_db("horarios") or die("No pudo seleccionarse la BD.".mysql_error());
+
+
+/* Realizar una consulta SQL */
+
+if ($clave!="admin") {echo("Clave incorrecta");exit;};
+
+echo("<a href='index.php'>MENU</a>");
+
+$consulta3= "select tipocargo,apellido1,usuarios.cedula,fecha,horaent,horasal from registro,usuarios where usuarios.cedula=registro.cedula and fecha>='$ano1-$mes1-$dia1' and fecha<='$ano2-$mes2-$dia2' order by tipocargo,apellido1,fecha,horaent";
+
+$resultado2 = mysql_query($consulta3) or die("La consulta fall&oacute;: " . mysql_error());
+
+/* Impresion de resultados en HTML */
+echo "<center><table border='1' bordercolor='#0000ff'><tr><td bgcolor='aaff00'>T.CARGO</td><td bgcolor='aaff00'>APELLIDO</td><td bgcolor='aaff00'>DOCUMENTO</td><td bgcolor='aaff00'>FECHA</td><td bgcolor='aaff00'>HORA ENTRADA</td><td bgcolor='aaff00'>HORA SALIDA</td></tr>\n";
+while(list($autor,$titulo,$tema,$codigo,$ano,$editorial)=mysql_fetch_row($resultado2)) {
+   echo "\t<tr>\n <td>$autor</td><td>$titulo</td><td>$tema</td><td>$codigo</td><td>$ano</td>
+<td>$editorial</td>
+</tr>
+
+   ";
+};
+
+echo("</table> <br><br><a href='index.php'>MENU</a>");
+
+
+/* Liberar conjunto de resultados */
+mysql_free_result($resultado2);
+
+/* Cerrar la conexion */
+mysql_close($enlace);
+?>
